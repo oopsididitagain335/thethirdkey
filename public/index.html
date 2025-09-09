@@ -3,29 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Third Key Esports</title>
+  <title>The Third Key | Unlock Your Arena</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,600;0,700;0,800;1,700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #000;
-      --text: #fff;
-      --accent: #007BFF;
-      --text-secondary: #bbb;
-      --border: #333;
-      --card-bg: #1a1a1a;
+      --bg: #030014;
+      --text: #ffffff;
+      --accent: #00aaff;
+      --text-muted: #a0a0c0;
+      --glow: rgba(0, 170, 255, 0.3);
+      --border-light: rgba(255, 255, 255, 0.08);
     }
 
     [data-theme="light"] {
-      --bg: #f8f9fa;
-      --text: #111;
-      --accent: #0056b3;
-      --text-secondary: #555;
-      --border: #ddd;
-      --card-bg: #ffffff;
+      --bg: #f0f4ff;
+      --text: #0b0b2a;
+      --accent: #0066cc;
+      --text-muted: #555;
+      --glow: rgba(0, 102, 204, 0.15);
+      --border-light: rgba(0, 0, 0, 0.1);
     }
 
     * {
@@ -37,497 +36,489 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Barlow', sans-serif;
-      transition: background 0.4s ease;
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
+    /* ———————————————— */
+    /* PRELOADER */
+    /* ———————————————— */
+
     .preloader {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       background: var(--bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: grid;
+      place-items: center;
       z-index: 9999;
-      transition: opacity 0.6s ease;
+      opacity: 1;
+      transition: opacity 0.8s ease;
     }
 
-    .preloader.fade-out {
+    .preloader.hidden {
       opacity: 0;
       pointer-events: none;
     }
 
-    .preloader img {
-      height: 120px;
-      width: auto;
-      filter: drop-shadow(0 0 20px rgba(0, 123, 255, 0.5));
-      animation: keyPulse 2s infinite alternate;
+    .preloader-logo {
+      height: 100px;
+      filter: drop-shadow(0 0 20px var(--glow));
+      animation: float 3s ease-in-out infinite;
     }
 
-    @keyframes keyPulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.05); }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
     }
 
-    .nav {
+    /* ———————————————— */
+    /* NAVIGATION */
+    /* ———————————————— */
+
+    .top-bar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
+      right: 0;
+      height: 72px;
+      padding: 0 4vw;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background: rgba(3, 0, 20, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 100;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .top-bar.scrolled {
+      background: rgba(3, 0, 20, 0.9);
       padding: 0 5vw;
-      height: 70px;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      z-index: 1000;
-      transition: all 0.3s ease;
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     }
 
-    .nav.scrolled {
-      background: rgba(0,0,0,0.95);
-      padding: 0 4vw;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    }
-
-    .nav.light {
-      background: rgba(255,255,255,0.9);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-
-    .nav-brand {
+    .logo-link {
       display: flex;
       align-items: center;
     }
 
-    .nav-brand img {
-      height: 48px;
-      max-height: 100%;
-      width: auto;
-      transition: transform 0.3s;
+    .logo-img {
+      height: 44px;
+      transition: transform 0.3s ease;
     }
 
-    .nav-brand img:hover {
-      transform: scale(1.05);
+    .logo-link:hover .logo-img {
+      transform: scale(1.06);
     }
 
-    .nav-list {
+    .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
     }
 
-    .nav-list a {
-      color: var(--text-secondary);
+    .nav-link {
+      color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 600;
-      letter-spacing: 1px;
       text-transform: uppercase;
+      letter-spacing: 1.2px;
       position: relative;
-      padding-bottom: 4px;
+      padding: 4px 0;
       transition: color 0.3s ease;
     }
 
-    .nav-list a:hover {
+    .nav-link:hover {
       color: var(--accent);
     }
 
-    .nav-list a::after {
+    .nav-link::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
       width: 0;
-      height: 1px;
+      height: 2px;
       background: var(--accent);
+      border-radius: 2px;
       transition: width 0.4s cubic-bezier(0.86, 0, 0.07, 1);
     }
 
-    .nav-list a:hover::after {
+    .nav-link:hover::after {
       width: 100%;
     }
 
-    .nav-cta a {
-      background: var(--accent);
+    .join-btn {
+      background: linear-gradient(135deg, var(--accent), #00ccff);
       color: #000;
-      padding: 8px 24px;
-      border-radius: 30px;
+      padding: 8px 26px;
+      border-radius: 50px;
       font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 1.5px;
+      font-size: 0.88rem;
       text-transform: uppercase;
+      letter-spacing: 1.5px;
       text-decoration: none;
       transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 170, 255, 0.3);
     }
 
-    .nav-cta a:hover {
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+    .join-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 170, 255, 0.5);
     }
+
+    /* ———————————————— */
+    /* HERO SECTION */
+    /* ———————————————— */
 
     main {
-      padding-top: 70px;
+      padding-top: 72px;
     }
 
-    .hero {
+    .hero-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      min-height: calc(100vh - 70px);
+      min-height: calc(100vh - 72px);
       align-items: center;
       padding: 80px 5vw;
-      gap: 5vw;
+      gap: 6vw;
     }
 
-    .hero-left {
+    .hero-content {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      max-width: 100%;
-      gap: 1.5rem;
+      gap: 1.8rem;
     }
 
-    .hero-left h1 {
-      font-size: 5.5rem;
+    .hero-title {
+      font-family: 'Barlow', sans-serif;
+      font-size: 5.2rem;
       font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -2px;
-      margin: 0;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.8s ease forwards 0.3s;
+      line-height: 1;
+      letter-spacing: -1.5px;
+      max-width: 12ch;
     }
 
-    .hero-left h1 span {
+    .hero-title strong {
       color: var(--accent);
       position: relative;
     }
 
-    .hero-left h1 span::after {
-      content: '🗝️';
+    .hero-title strong::after {
+      content: "🗝️";
       position: absolute;
-      top: -0.5em;
-      right: -1.2em;
-      font-size: 1.2em;
-      opacity: 0.7;
-      animation: keyFloat 3s ease-in-out infinite;
+      top: -0.4em;
+      right: -1.4em;
+      font-size: 1.4em;
+      animation: pulse 2s infinite alternate;
     }
 
-    @keyframes keyFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    @keyframes pulse {
+      from { opacity: 0.6; transform: scale(1); }
+      to { opacity: 1; transform: scale(1.1); }
     }
 
-    .hero-left p {
-      font-size: 1.2rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 90%;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease forwards 0.5s;
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 50ch;
+      font-weight: 500;
     }
 
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .social-icons {
+    .social-bar {
       display: flex;
-      gap: 1.5rem;
-      margin-top: 1rem;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease forwards 0.7s;
+      gap: 1.8rem;
+      margin-top: 0.5rem;
     }
 
-    .social-icons a {
-      color: #777;
-      font-size: 1.6rem;
+    .social-link {
+      color: var(--text-muted);
+      font-size: 1.5rem;
       transition: all 0.3s ease;
     }
 
-    .social-icons a:hover {
+    .social-link:hover {
       color: var(--accent);
-      transform: translateY(-5px) rotate(15deg);
+      transform: translateY(-4px) rotate(12deg);
     }
 
-    .cta-button {
+    .primary-cta {
       background: var(--accent);
       color: #000;
-      padding: 16px 48px;
-      border-radius: 8px;
+      padding: 16px 52px;
+      border-radius: 12px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 2px;
-      font-size: 1rem;
+      font-size: 1.05rem;
       text-decoration: none;
-      width: fit-content;
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.8s ease forwards 0.9s;
+      width: max-content;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       margin-top: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+      box-shadow: 0 6px 20px rgba(0, 170, 255, 0.35);
     }
 
-    .cta-button:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 123, 255, 0.4);
+    .primary-cta:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 35px rgba(0, 170, 255, 0.5);
     }
 
-    .hero-right {
+    .hero-visual {
       display: flex;
-      align-items: center;
       justify-content: center;
-      position: relative;
+      align-items: center;
+      perspective: 1000px;
     }
 
-    .hero-video {
+    .visual-frame {
       width: 100%;
-      max-width: 550px;
-      height: 420px;
+      max-width: 580px;
+      height: 440px;
+      border-radius: 24px;
       overflow: hidden;
       position: relative;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-      transform: perspective(800px) rotateY(-5deg);
-      transition: transform 0.5s ease;
+      transform: rotateY(-8deg) rotateX(2deg);
+      transition: transform 0.6s ease;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .hero-video:hover {
-      transform: perspective(800px) rotateY(0deg);
+    .hero-visual:hover .visual-frame {
+      transform: rotateY(0deg) rotateX(0deg);
     }
 
-    .hero-video::before {
-      content: '';
+    .visual-frame::before {
+      content: "";
       position: absolute;
-      top: -10px;
-      right: -10px;
-      font-family: "Font Awesome 6 Free";
-      font-weight: 900;
-      content: '\f084';
-      color: var(--accent);
-      font-size: 2rem;
-      opacity: 0.2;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(0,170,255,0.4)' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8'/%3E%3Cpath d='M12 4v16'/%3E%3Cpath d='M8 8h8'/%3E%3C/svg%3E") center/contain no-repeat;
       z-index: 2;
-      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
 
-    .hero-video img {
+    .hero-visual:hover .visual-frame::before {
+      opacity: 1;
+    }
+
+    .visual-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      border-radius: 14px;
-      transition: filter 0.3s;
+      filter: saturate(1.1) brightness(1.05);
+      transition: filter 0.4s ease;
     }
 
-    .hero-video:hover img {
-      filter: brightness(1.1);
+    .hero-visual:hover img {
+      filter: saturate(1.2) brightness(1.15);
     }
+
+    /* ———————————————— */
+    /* FOOTER & THEME */
+    /* ———————————————— */
 
     footer {
-      padding: 24px 5vw;
+      padding: 28px 5vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--border-light);
       font-size: 0.9rem;
-      color: var(--text-secondary);
-      letter-spacing: 1px;
-      position: relative;
-      z-index: 10;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
-    .theme-toggle {
+    .theme-switcher {
       background: none;
       border: none;
-      color: var(--text-secondary);
+      color: var(--text-muted);
+      font-size: 1.3rem;
       cursor: pointer;
-      font-size: 1.2rem;
-      transition: color 0.3s;
+      transition: color 0.3s ease;
     }
 
-    .theme-toggle:hover {
+    .theme-switcher:hover {
       color: var(--accent);
     }
 
-    .border-glow {
+    .edge-glow {
       position: fixed;
-      top: 70px;
+      top: 72px;
       left: 5vw;
       right: 5vw;
       bottom: 80px;
       pointer-events: none;
-      border: 1px solid rgba(0, 123, 255, 0.2);
-      border-radius: 16px;
+      border: 1px solid var(--glow);
+      border-radius: 20px;
       z-index: 1;
-      transition: border 0.4s;
-      box-shadow: inset 0 0 15px rgba(0, 123, 255, 0.1);
+      box-shadow: 0 0 30px 2px var(--glow);
     }
 
-    /* Responsive */
+    /* ———————————————— */
+    /* RESPONSIVE */
+    /* ———————————————— */
+
     @media (max-width: 1024px) {
-      .hero {
+      .hero-container {
         grid-template-columns: 1fr;
         padding: 80px 5vw 60px;
-        gap: 40px;
+        gap: 50px;
       }
 
-      .hero-right {
+      .hero-visual {
         order: -1;
       }
 
-      .hero-video {
+      .visual-frame {
         max-width: 100%;
-        height: 340px;
+        height: 360px;
         transform: none;
       }
 
-      .hero-left h1 {
+      .hero-title {
         font-size: 4rem;
       }
     }
 
     @media (max-width: 768px) {
-      .nav-brand img {
+      .logo-img {
         height: 40px;
       }
 
-      .nav-list {
-        gap: 1.5rem;
+      .nav-links {
+        gap: 1.2rem;
       }
 
-      .nav-list a {
-        font-size: 0.8rem;
+      .nav-link {
+        font-size: 0.85rem;
       }
 
-      .hero-left h1 {
-        font-size: 2.8rem;
-        line-height: 1.2;
+      .hero-title {
+        font-size: 3rem;
+        line-height: 1.1;
       }
 
-      .hero-left p {
+      .hero-subtitle {
         font-size: 1.1rem;
       }
 
-      .social-icons a {
+      .social-link {
         font-size: 1.4rem;
       }
 
-      .cta-button {
-        padding: 14px 36px;
-        font-size: 0.95rem;
+      .primary-cta {
+        padding: 14px 40px;
+        font-size: 1rem;
       }
 
-      .hero-video {
-        height: 280px;
+      .visual-frame {
+        height: 300px;
       }
     }
 
     @media (max-width: 480px) {
-      .hero-left h1 {
-        font-size: 2.3rem;
+      .hero-title {
+        font-size: 2.4rem;
       }
 
-      .hero-left p {
+      .hero-subtitle {
         font-size: 1rem;
       }
 
-      .cta-button {
-        padding: 12px 32px;
-        font-size: 0.9rem;
+      .join-btn {
+        padding: 6px 20px;
+        font-size: 0.8rem;
       }
 
-      .nav-cta a {
-        padding: 6px 18px;
-        font-size: 0.8rem;
+      .primary-cta {
+        padding: 12px 36px;
+        font-size: 0.95rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="preloader">
-    <img src="/thk.png" alt="The Third Key Esports Logo">
+  <!-- PRELOADER -->
+  <div class="preloader" id="preloader">
+    <img src="/thk.png" alt="The Third Key" class="preloader-logo">
   </div>
 
-  <nav class="nav">
-    <div class="nav-brand">
-      <img src="/thk.png" alt="The Third Key Esports Logo">
-    </div>
-    <ul class="nav-list">
-      <li><a href="/">HOME</a></li>
-      <li><a href="/about">ABOUT</a></li>
-      <li><a href="/roster">ROSTER</a></li>
-      <li><a href="/contact">CONTACT</a></li>
+  <!-- NAV -->
+  <header class="top-bar" id="topBar">
+    <a href="/" class="logo-link">
+      <img src="/thk.png" alt="The Third Key Esports" class="logo-img">
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/about" class="nav-link">About</a></li>
+      <li><a href="/roster" class="nav-link">Roster</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
     </ul>
-    <div class="nav-cta">
-      <a href="/apply">JOIN</a>
-    </div>
-  </nav>
+    <a href="/apply" class="join-btn">Join Us</a>
+  </header>
 
+  <!-- MAIN CONTENT -->
   <main>
-    <div class="hero">
-      <div class="hero-left">
-        <h1>UNLOCK. <span>DOMINATE.</span> ASCEND.</h1>
-        <p>The Third Key awaits. Forge your legacy. Claim your place among the elite. One key opens the door — this one opens destiny.</p>
-        <div class="social-icons">
-          <a href="https://x.com/WorshipHQ" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-          <a href="https://www.youtube.com/@FRWorship" target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
-          <a href="https://www.twitch.tv/worshiphq" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitch"></i></a>
-          <a href="https://discord.gg/worshiphq" target="_blank" rel="noopener noreferrer"><i class="fab fa-discord"></i></a>
+    <section class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">UNLOCK. <strong>ASCEND.</strong> CONQUER.</h1>
+        <p class="hero-subtitle">The arena awaits. Forge your legend. The Third Key isn’t just a team — it’s the threshold to greatness.</p>
+        <div class="social-bar">
+          <a href="#" class="social-link" title="Twitter — Coming Soon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link" title="YouTube — Coming Soon"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-link" title="Twitch — Coming Soon"><i class="fab fa-twitch"></i></a>
+          <a href="#" class="social-link" title="Discord — Coming Soon"><i class="fab fa-discord"></i></a>
         </div>
-        <a href="/apply" class="cta-button">CLAIM YOUR KEY</a>
+        <a href="/apply" class="primary-cta">Claim Your Place</a>
       </div>
-      <div class="hero-right">
-        <div class="hero-video">
-          <img src="/thk.png" alt="The Third Key Esports Team" />
+      <div class="hero-visual">
+        <div class="visual-frame">
+          <img src="/thk.png" alt="The Third Key — Esports Excellence">
         </div>
       </div>
-    </div>
+    </section>
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <div>© 2025 THE THIRD KEY ESPORTS</div>
-    <button class="theme-toggle" id="themeToggle">🌓</button>
-    <div>BUILT BY SOLDEV</div>
+    <div>© 2025 The Third Key Esports</div>
+    <button class="theme-switcher" id="themeToggle">🌓</button>
+    <div>Crafted by SOLDEV</div>
   </footer>
 
-  <div class="border-glow"></div>
+  <!-- BORDER GLOW -->
+  <div class="edge-glow"></div>
 
+  <!-- FONT AWESOME (loaded at end for performance) -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- MAIN JS -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const preloader = document.querySelector('.preloader');
-      const nav = document.querySelector('.nav');
+    document.addEventListener('DOMContentLoaded', function() {
+      const preloader = document.getElementById('preloader');
+      const topBar = document.getElementById('topBar');
       const themeToggle = document.getElementById('themeToggle');
       const body = document.body;
 
-      // Fade out preloader
+      // Hide preloader after delay
       setTimeout(() => {
-        preloader.classList.add('fade-out');
-      }, 1200);
+        preloader.classList.add('hidden');
+      }, 1500);
 
-      // Nav scroll effect
+      // Navbar scroll effect
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-          nav.classList.add('scrolled');
+        if (window.scrollY > 60) {
+          topBar.classList.add('scrolled');
         } else {
-          nav.classList.remove('scrolled');
+          topBar.classList.remove('scrolled');
         }
       });
 
@@ -536,10 +527,10 @@
       body.setAttribute('data-theme', savedTheme);
 
       themeToggle.addEventListener('click', () => {
-        const currentTheme = body.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        body.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        const current = body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
       });
     });
   </script>
