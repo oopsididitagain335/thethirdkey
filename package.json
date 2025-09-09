@@ -1,0 +1,24 @@
+{
+  "name": "the-third-key-esports-server",
+  "version": "1.0.0",
+  "description": "Static server for The Third Key Esports website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "esports",
+    "static",
+    "server",
+    "express"
+  ],
+  "author": "SOLDEV",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
