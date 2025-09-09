@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roster | The Third Key Esports</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,600;0,700;0,800;1,700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --accent: #0088ff;
+      --text-muted: #888;
+      --glow: rgba(0, 136, 255, 0.2);
+      --border-light: rgba(255, 255, 255, 0.05);
+    }
+
+    [data-theme="light"] {
+      --bg: #0a0f2c;
+      --text: #e6eaff;
+      --accent: #00aaff;
+      --text-muted: #aaa;
+      --glow: rgba(0, 170, 255, 0.1);
+      --border-light: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      letter-spacing: -0.01em;
+    }
+
+    /* ———————————————— */
+    /* PRELOADER */
+    /* ———————————————— */
+
+    .preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.8s ease;
+    }
+
+    .preloader.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .preloader-logo {
+      height: 100px;
+      filter: drop-shadow(0 0 15px var(--glow));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ———————————————— */
+    /* NAVIGATION */
+    /* ———————————————— */
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      padding: 0 4vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-light);
+      z-index: 100;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .top-bar.scrolled {
+      background: rgba(0, 0, 0, 0.95);
+      padding: 0 5vw;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-img {
+      height: 44px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-link:hover .logo-img {
+      transform: scale(1.06);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--accent);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .join-btn {
+      background: linear-gradient(135deg, var(--accent), #00b3ff);
+      color: #000;
+      padding: 8px 26px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 136, 255, 0.2);
+    }
+
+    .join-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 136, 255, 0.3);
+    }
+
+    /* ———————————————— */
+    /* MAIN CONTENT */
+    /* ———————————————— */
+
+    main {
+      padding-top: 72px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: 'Barlow', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin: 80px 0 40px;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .roster-container {
+      display: flex;
+      justify-content: center;
+      padding: 0 5vw 100px;
+    }
+
+    .player-card {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 28px;
+      overflow: hidden;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-light);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+    }
+
+    .player-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 30px 80px rgba(0, 136, 255, 0.3);
+    }
+
+    .player-image {
+      position: relative;
+      height: 100%;
+      min-height: 500px;
+      background: linear-gradient(135deg, #00042a, #000000);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .player-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('/thk.png') no-repeat center center / 40% auto;
+      opacity: 0.05;
+      z-index: 0;
+    }
+
+    .player-avatar {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      box-shadow: 0 0 40px var(--glow);
+      position: relative;
+      z-index: 2;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .player-card:hover .player-avatar {
+      transform: scale(1.05);
+      box-shadow: 0 0 60px rgba(0, 136, 255, 0.4);
+    }
+
+    .player-info {
+      padding: 3rem 3rem 3rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .player-name {
+      font-family: 'Barlow', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, var(--text), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .player-role {
+      font-size: 1.4rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .player-role::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .player-card:hover .player-role::after {
+      transform: scaleX(1);
+    }
+
+    .player-bio {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      color: var(--text-muted);
+    }
+
+    .legacy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .legacy-item {
+      background: rgba(0, 136, 255, 0.05);
+      padding: 1.2rem;
+      border-radius: 16px;
+      text-align: center;
+      border: 1px solid rgba(0, 136, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .legacy-item:hover {
+      background: rgba(0, 136, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .legacy-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'Barlow', sans-serif;
+      margin-bottom: 0.5rem;
+    }
+
+    .legacy-label {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .key-icon {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0 10px var(--glow));
+      animation: rotateKey 10s linear infinite;
+      opacity: 0.8;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .player-card:hover .key-icon {
+      transform: rotate(360deg) scale(1.3);
+      opacity: 1;
+    }
+
+    @keyframes rotateKey {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ———————————————— */
+    /* FOOTER */
+    /* ———————————————— */
+
+    footer {
+      padding: 32px 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-light);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .theme-switcher {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .theme-switcher:hover {
+      color: var(--accent);
+    }
+
+    /* ———————————————— */
+    /* RESPONSIVE */
+    /* ———————————————— */
+
+    @media (max-width: 1024px) {
+      .player-card {
+        grid-template-columns: 1fr;
+      }
+
+      .player-image {
+        min-height: 400px;
+      }
+
+      .player-avatar {
+        width: 180px;
+        height: 180px;
+      }
+
+      .player-name {
+        font-size: 2.5rem;
+      }
+
+      .legacy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section-title {
+        font-size: 2.8rem;
+      }
+
+      .player-info {
+        padding: 2rem;
+      }
+
+      .player-name {
+        font-size: 2.2rem;
+      }
+
+      .player-role {
+        font-size: 1.2rem;
+      }
+
+      .player-bio {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 2.2rem;
+      }
+
+      .player-avatar {
+        width: 150px;
+        height: 150px;
+      }
+
+      .player-name {
+        font-size: 1.8rem;
+      }
+
+      .legacy-value {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div class="preloader" id="preloader">
+    <img src="/thk.png" alt="The Third Key" class="preloader-logo">
+  </div>
+
+  <!-- NAV -->
+  <header class="top-bar" id="topBar">
+    <a href="/" class="logo-link">
+      <img src="/thk.png" alt="The Third Key Esports" class="logo-img">
+    </a>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-link">Home</a></li>
+      <li><a href="/about" class="nav-link">About</a></li>
+      <li><a href="/roster" class="nav-link">Roster</a></li>
+      <li><a href="/contact" class="nav-link">Contact</a></li>
+    </ul>
+    <a href="/apply" class="join-btn">Join Us</a>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <h2 class="section-title">The Keybearer</h2>
+
+    <div class="roster-container">
+      <div class="player-card">
+        <!-- Animated floating key icon -->
+        <svg class="key-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 11c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+          <path d="M12 5V3c-3.31 0-6 2.69-6 6 0 1.38.45 2.63 1.2 3.63L12 17l4.8-4.37C17.55 11.63 18 10.38 18 9c0-3.31-2.69-6-6-6z"/>
+        </svg>
+
+        <!-- Left: Player Image -->
+        <div class="player-image">
+          <!-- Placeholder — replace with Tyro's actual image -->
+          <img src="/tyro-avatar.jpg" alt="Tyro — Founder & Keybearer" class="player-avatar" onerror="this.src='/thk.png'; this.style.objectFit='contain';">
+        </div>
+
+        <!-- Right: Player Info -->
+        <div class="player-info">
+          <h3 class="player-name">TYRO</h3>
+          <div class="player-role">Founder / Keybearer</div>
+          <p class="player-bio">
+            The last founder standing. The keeper of the threshold. Tyro carries not just skill, but the weight of every door closed — and every one he forced open. He doesn’t recruit players. He seeks keybearers.
+          </p>
+
+          <div class="legacy-grid">
+            <div class="legacy-item">
+              <div class="legacy-value">∞</div>
+              <div class="legacy-label">Doors Opened</div>
+            </div>
+            <div class="legacy-item">
+              <div class="legacy-value">3</div>
+              <div class="legacy-label">Keys Turned</div>
+            </div>
+            <div class="legacy-item">
+              <div class="legacy-value">1</div>
+              <div class="legacy-label">Legacy Forged</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>© 2025 The Third Key Esports</div>
+    <button class="theme-switcher" id="themeToggle">🌓</button>
+    <div>Crafted by SOLDEV</div>
+  </footer>
+
+  <!-- FONT AWESOME -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- MAIN JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const preloader = document.getElementById('preloader');
+      const topBar = document.getElementById('topBar');
+      const themeToggle = document.getElementById('themeToggle');
+      const body = document.body;
+
+      // Hide preloader
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+      }, 1500);
+
+      // Navbar scroll effect
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) {
+          topBar.classList.add('scrolled');
+        } else {
+          topBar.classList.remove('scrolled');
+        }
+      });
+
+      // Theme toggle
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      body.setAttribute('data-theme', savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const current = body.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        body.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    });
+  </script>
+
+</body>
+</html>
